@@ -83,8 +83,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/employee-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +110,6 @@ if (!$profile_image || !file_exists($profile_image)) {
             <li><a href="employee_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
             <li><a href="employee_clients.php"><i class="fas fa-users"></i><span>Client Management</span></a></li>
             <li><a href="employee_audit.php"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -119,6 +118,8 @@ if (!$profile_image || !file_exists($profile_image)) {
         $page_subtitle = 'Overview of your work activities and system statistics';
         include 'components/profile_header.php'; 
         ?>
+        
+
         
         <!-- Quick Actions -->
         <div class="quick-actions">

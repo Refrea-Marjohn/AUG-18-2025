@@ -57,7 +57,7 @@ try {
                     
                     if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $upload_path)) {
                         // Delete old profile image if it exists and is not the default
-                        $default_image = 'assets/images/' . $user_type . '-avatar.png';
+                        $default_image = 'images/default-avatar.jpg';
                         if ($profile_image && $profile_image !== $default_image && file_exists($profile_image)) {
                             unlink($profile_image);
                         }

@@ -402,7 +402,7 @@ if (isset($_POST['submit'])) {
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-            z-index: 1000;
+            z-index: 9999;
             width: 90%;
             max-width: 400px;
             animation: slideIn 0.3s ease;
@@ -451,7 +451,7 @@ if (isset($_POST['submit'])) {
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-            z-index: 1000;
+            z-index: 9999;
             width: 90%;
             max-width: 400px;
             animation: slideIn 0.3s ease;
@@ -746,7 +746,7 @@ if (isset($_POST['submit'])) {
 
     <!-- OTP Verification Modal -->
     <?php if (isset($_SESSION['show_otp_modal']) && isset($_SESSION['pending_registration'])): ?>
-    <div class="otp-modal" id="otpModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(93, 14, 38, 0.8); display: flex; align-items: center; justify-content: center; z-index: 2000;">
+    <div class="otp-modal" id="otpModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(93, 14, 38, 0.8); display: flex; align-items: center; justify-content: center; z-index: 9999;">
         <div style="background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); padding: 40px 35px; max-width: 480px; width: 90%; position: relative; animation: slideIn 0.3s ease;">
             <div style="text-align: center; margin-bottom: 30px;">
                 <h2 style="color: #5D0E26; margin-bottom: 15px; font-size: 32px; font-weight: 700; font-family: 'Playfair Display', serif; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">Opiña Law Office</h2>

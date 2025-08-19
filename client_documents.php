@@ -14,8 +14,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/client-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,10 +78,6 @@ if (!$profile_image || !file_exists($profile_image)) {
                 <p>Generate and manage your document storage</p>
             </div>
             <div class="user-info">
-                <div class="topbar-notification">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">0</span>
-                </div>
                 <div class="profile-dropdown" style="display: flex; align-items: center; gap: 12px;">
                     <img src="<?= htmlspecialchars($profile_image) ?>" alt="Client" style="object-fit:cover;width:42px;height:42px;border-radius:50%;border:2px solid #1976d2;cursor:pointer;" onclick="toggleProfileDropdown()">
                     <div class="user-details">

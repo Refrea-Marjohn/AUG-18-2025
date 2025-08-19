@@ -21,8 +21,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $client_name = $row['name'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/client-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 
 // Fetch all attorneys and admins with profile images (so clients can message both)
 $attorneys = [];
@@ -32,7 +32,7 @@ $res = $stmt->get_result();
 while ($row = $res->fetch_assoc()) {
     $img = $row['profile_image'];
     if (!$img || !file_exists($img)) {
-        $img = $row['user_type'] === 'admin' ? 'assets/images/admin-avatar.png' : 'assets/images/attorney-avatar.png';
+        $img = $row['user_type'] === 'admin' ? 'images/default-avatar.jpg' : 'images/default-avatar.jpg';
     }
     $row['profile_image'] = $img;
     $attorneys[] = $row;
@@ -51,7 +51,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'fetch_messages') {
     $stmt->execute();
     $res = $stmt->get_result();
     if ($res && $row = $res->fetch_assoc()) $client_img = $row['profile_image'];
-    if (!$client_img || !file_exists($client_img)) $client_img = 'assets/images/client-avatar.png';
+    if (!$client_img || !file_exists($client_img)) $client_img = 'images/default-avatar.jpg';
     // Fetch attorney profile image
     $attorney_img = '';
     $stmt = $conn->prepare("SELECT profile_image FROM user_form WHERE id=?");
@@ -59,7 +59,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'fetch_messages') {
     $stmt->execute();
     $res = $stmt->get_result();
     if ($res && $row = $res->fetch_assoc()) $attorney_img = $row['profile_image'];
-    if (!$attorney_img || !file_exists($attorney_img)) $attorney_img = 'assets/images/attorney-avatar.png';
+    if (!$attorney_img || !file_exists($attorney_img)) $attorney_img = 'images/default-avatar.jpg';
     // Fetch client to attorney/admin messages
     $stmt1 = $conn->prepare("SELECT message, sent_at, 'client' as sender FROM client_messages WHERE client_id=? AND recipient_id=?");
     $stmt1->bind_param('ii', $client_id, $attorney_id);
@@ -228,8 +228,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'create_case_from_chat') {
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -276,10 +276,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'create_case_from_chat') {
                 <p>Communicate with your attorneys</p>
             </div>
             <div class="user-info">
-                <div class="topbar-notification">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">0</span>
-                </div>
                 <div class="profile-dropdown" style="display: flex; align-items: center; gap: 12px;">
                     <img src="<?= htmlspecialchars($profile_image) ?>" alt="Client" style="object-fit:cover;width:42px;height:42px;border-radius:50%;border:2px solid #1976d2;cursor:pointer;" onclick="toggleProfileDropdown()">
                     <div class="user-details">

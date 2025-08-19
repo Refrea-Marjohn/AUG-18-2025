@@ -18,8 +18,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $user_name = $row['name'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/client-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 $cases = [];
 $sql = "SELECT ac.*, uf.name as attorney_name FROM attorney_cases ac LEFT JOIN user_form uf ON ac.attorney_id = uf.id WHERE ac.client_id=? ORDER BY ac.created_at DESC";
 $stmt = $conn->prepare($sql);
@@ -153,8 +153,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'add_case') {
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -174,10 +174,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'add_case') {
                 <p>Track your cases, status, and schedule</p>
             </div>
             <div class="user-info">
-                <div class="topbar-notification">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">0</span>
-                </div>
                 <div class="profile-dropdown" style="display: flex; align-items: center; gap: 12px;">
                     <img src="<?= htmlspecialchars($profile_image) ?>" alt="Client" style="object-fit:cover;width:42px;height:42px;border-radius:50%;border:2px solid #1976d2;cursor:pointer;" onclick="toggleProfileDropdown()">
                     <div class="user-details">
@@ -186,7 +182,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'add_case') {
                     </div>
                     
                                 <!-- Profile Dropdown Menu -->
-            <div class="profile-dropdown-content" id="profileDropdown">
+            <div class="profile-dropdown-content" id="profileDropdown" style="z-index: 5000 !important;">
                 <a href="#" onclick="editProfile()">
                     <i class="fas fa-user-edit"></i>
                     Edit Profile
@@ -201,13 +197,13 @@ if (isset($_POST['action']) && $_POST['action'] === 'add_case') {
 </div>
 
 <!-- Edit Profile Modal -->
-<div id="editProfileModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
+<div id="editProfileModal" class="modal" style="z-index: 9999 !important;">
+    <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+        <div class="modal-header" style="z-index: 9999 !important;">
             <h2>Edit Profile</h2>
             <span class="close" onclick="closeEditProfileModal()">&times;</span>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="z-index: 9999 !important;">
             <div class="profile-edit-container">
                 <form method="POST" enctype="multipart/form-data" class="profile-form" id="editProfileForm">
                     <div class="form-section">
@@ -285,29 +281,29 @@ if (isset($_POST['action']) && $_POST['action'] === 'add_case') {
             </table>
         </div>
         <!-- Case Details Modal -->
-        <div class="modal" id="caseModal" style="display:none;">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal" id="caseModal" style="display:none;" style="z-index: 9999 !important;">
+            <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <h2>Case Details</h2>
                     <button class="close-modal" onclick="closeCaseModal()">&times;</button>
                 </div>
-                <div class="modal-body" id="caseModalBody">
+                <div class="modal-body" id="caseModalBody" style="z-index: 9999 !important;">
                     <!-- Dynamic case details here -->
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="z-index: 9999 !important;">
                     <button class="btn btn-secondary" onclick="closeCaseModal()">Close</button>
                 </div>
             </div>
         </div>
 
         <!-- Conversation Modal -->
-        <div class="modal" id="conversationModal" style="display:none;">
-            <div class="modal-content" style="max-width:600px;">
-                <div class="modal-header">
+        <div class="modal" id="conversationModal" style="display:none;" style="z-index: 9999 !important;">
+            <div class="modal-content" style="max-width:600px;" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <h2>Conversation with <span id="convAttorneyName"></span></h2>
                     <button class="close-modal" onclick="closeConversationModal()">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="z-index: 9999 !important;">
                     <div class="chat-messages" id="convChatMessages" style="height:300px;overflow-y:auto;background:#f9f9f9;padding:16px;border-radius:8px;margin-bottom:10px;"></div>
                     <div class="chat-compose" id="convChatCompose" style="display:flex;gap:10px;">
                         <textarea id="convMessageInput" placeholder="Type your message..." style="flex:1;border-radius:8px;border:1px solid #ddd;padding:10px;resize:none;font-size:1rem;"></textarea>
@@ -317,13 +313,13 @@ if (isset($_POST['action']) && $_POST['action'] === 'add_case') {
             </div>
         </div>
         <!-- Requests Modal -->
-        <div class="modal" id="requestsModal" style="display:none;">
-            <div class="modal-content" style="max-width:700px; max-height: 90vh; overflow-y: auto;">
-                <div class="modal-header">
+        <div class="modal" id="requestsModal" style="display:none;" style="z-index: 9999 !important;">
+            <div class="modal-content" style="max-width:700px; max-height: 90vh; overflow-y: auto;" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <h2>Document Requests</h2>
                     <button class="close-modal" onclick="closeRequestsModal()">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="z-index: 9999 !important;">
                     <div id="clientRequestsList" style="margin-bottom:12px;"></div>
                     <form id="uploadRequestForm" style="display:none;">
                         <input type="hidden" name="request_id" id="uploadRequestId">

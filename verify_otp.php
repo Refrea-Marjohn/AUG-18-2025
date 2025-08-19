@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <?php if ($pending): ?>
-<div class="otp-modal" id="otpModal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,0,0,0.18);display:flex;align-items:center;justify-content:center;z-index:2000;">
+<div class="otp-modal" id="otpModal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,0,0,0.18);display:flex;align-items:center;justify-content:center;z-index: 9999;">
     <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:36px 32px;max-width:450px;width:100%;position:relative;">
         <div style="text-align:center;margin-bottom:30px;">
             <h2 style="color:#800000;margin-bottom:10px;font-size:28px;font-weight:600;">Opiña Law Office</h2>

@@ -12,8 +12,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/client-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 // Fetch all events for this client
 $events = [];
 $stmt = $conn->prepare("SELECT cs.*, ac.title as case_title, uf.name as attorney_name FROM case_schedules cs LEFT JOIN attorney_cases ac ON cs.case_id = ac.id LEFT JOIN user_form uf ON ac.attorney_id = uf.id WHERE cs.client_id=? ORDER BY cs.date, cs.time");
@@ -37,8 +37,8 @@ while ($row = $res->fetch_assoc()) $events[] = $row;
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -85,10 +85,6 @@ while ($row = $res->fetch_assoc()) $events[] = $row;
                 <p>View your upcoming appointments and court hearings</p>
             </div>
             <div class="user-info">
-                <div class="topbar-notification">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">0</span>
-                </div>
                 <div class="profile-dropdown" style="display: flex; align-items: center; gap: 12px;">
                     <img src="<?= htmlspecialchars($profile_image) ?>" alt="Client" style="object-fit:cover;width:42px;height:42px;border-radius:50%;border:2px solid #1976d2;cursor:pointer;" onclick="toggleProfileDropdown()">
                     <div class="user-details">

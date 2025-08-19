@@ -11,8 +11,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/attorney-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 // Fetch all clients for dropdown
 $clients = [];
 $stmt = $conn->prepare("SELECT id, name FROM user_form WHERE user_type='client'");
@@ -267,8 +267,8 @@ while ($row = $result->fetch_assoc()) {
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -322,13 +322,13 @@ while ($row = $result->fetch_assoc()) {
 				</div>
 			</div>
         <!-- Document Requests Modal -->
-        <div class="modal" id="requestModal" style="display:none;">
-            <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
-                <div class="modal-header">
+        <div class="modal" id="requestModal" style="display:none;" style="z-index: 9999 !important;">
+            <div class="modal-content" style="max-height: 90vh; overflow-y: auto;" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <h2>Document Requests</h2>
                     <button class="close-modal" onclick="closeRequestModal()">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="z-index: 9999 !important;">
                     <form id="requestForm" style="margin-bottom:14px;">
                         <input type="hidden" name="case_id" id="reqCaseId">
                         <input type="hidden" name="client_id" id="reqClientId">
@@ -354,13 +354,13 @@ while ($row = $result->fetch_assoc()) {
             </div>
         </div>
         <!-- Add Case Modal -->
-        <div class="modal" id="addCaseModal" style="display:none;">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal" id="addCaseModal" style="display:none;" style="z-index: 9999 !important;">
+            <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <h2>Add New Case</h2>
                     <button class="close-modal" onclick="closeAddCaseModal()">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="z-index: 9999 !important;">
                     <form id="addCaseForm">
                         <div class="form-group">
                             <label>Client</label>
@@ -412,30 +412,30 @@ while ($row = $result->fetch_assoc()) {
             </div>
         </div>
         <!-- Conversation Modal -->
-        <div class="modal" id="conversationModal" style="display:none;">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal" id="conversationModal" style="display:none;" style="z-index: 9999 !important;">
+            <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <h2>Conversation with Client</h2>
                     <button class="close-modal" onclick="closeConversationModal()">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="z-index: 9999 !important;">
                     <div class="chat-messages" id="modalChatMessages" style="max-height:300px;overflow-y:auto;">
                         <!-- Dynamic chat here -->
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="z-index: 9999 !important;">
                     <button class="btn btn-secondary" onclick="closeConversationModal()">Close</button>
                 </div>
             </div>
         </div>
         <!-- Edit Case Modal -->
-        <div class="modal" id="editCaseModal" style="display:none;">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal" id="editCaseModal" style="display:none;" style="z-index: 9999 !important;">
+            <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <h2>Edit Case Status</h2>
                     <button class="close-modal" onclick="closeEditCaseModal()">&times;</button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="z-index: 9999 !important;">
                     <form id="editCaseForm">
                         <input type="hidden" name="case_id" id="editCaseId">
                         <div class="form-group">
@@ -456,26 +456,26 @@ while ($row = $result->fetch_assoc()) {
             </div>
         </div>
                  <!-- Add this modal after the Edit Case Modal -->
-         <div class="modal" id="summaryModal" style="display:none;">
-             <div class="modal-content">
-                 <div class="modal-header">
+         <div class="modal" id="summaryModal" style="display:none;" style="z-index: 9999 !important;">
+             <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                 <div class="modal-header" style="z-index: 9999 !important;">
                      <h2>Case Summary</h2>
                      <button class="close-modal" onclick="closeSummaryModal()">&times;</button>
                  </div>
-                 <div class="modal-body">
+                 <div class="modal-body" style="z-index: 9999 !important;">
                      <p id="summaryText" style="white-space: pre-line;"></p>
                  </div>
              </div>
          </div>
          
          <!-- Document Request Status Update Modal -->
-         <div class="modal" id="statusUpdateModal" style="display:none;">
-             <div class="modal-content">
-                 <div class="modal-header">
+         <div class="modal" id="statusUpdateModal" style="display:none;" style="z-index: 9999 !important;">
+             <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
+                 <div class="modal-header" style="z-index: 9999 !important;">
                      <h2>Update Document Request Status</h2>
                      <button class="close-modal" onclick="closeStatusUpdateModal()">&times;</button>
                  </div>
-                 <div class="modal-body">
+                 <div class="modal-body" style="z-index: 9999 !important;">
                      <form id="statusUpdateForm">
                          <input type="hidden" name="request_id" id="statusUpdateRequestId">
                          <div class="form-group">

@@ -14,8 +14,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/admin-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 
 // Log activity function for document actions
 function log_activity($conn, $doc_id, $action, $user_id, $user_name, $form_number, $file_name) {
@@ -396,8 +396,8 @@ if ($actRes && $actRes->num_rows > 0) {
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -406,7 +406,7 @@ if ($actRes && $actRes->num_rows > 0) {
             <li><a href="admin_document_generation.php"><i class="fas fa-file-alt"></i><span>Document Generations</span></a></li>
             <li><a href="admin_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
             <li><a href="admin_usermanagement.php"><i class="fas fa-users-cog"></i><span>User Management</span></a></li>
-            <li><a href="admin/manage_cases.php"><i class="fas fa-gavel"></i><span>Case Management</span></a></li>
+            <li><a href="admin_managecases.php"><i class="fas fa-gavel"></i><span>Case Management</span></a></li>
             <li><a href="admin_clients.php"><i class="fas fa-users"></i><span>My Clients</span></a></li>
             <li><a href="admin_messages.php"><i class="fas fa-comments"></i><span>Messages</span></a></li>
             <li><a href="admin_audit.php"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>
@@ -969,7 +969,7 @@ if ($actRes && $actRes->num_rows > 0) {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.45);
-            z-index: 10000;
+            z-index: 99990;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1146,7 +1146,7 @@ if ($actRes && $actRes->num_rows > 0) {
 </head>
 <body>
     <!-- Compact Upload Modal -->
-    <div id="uploadModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto;">
+    <div id="uploadModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto;">
         <div style="background: white; margin: 5% auto; padding: 24px; border-radius: 8px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
             <span onclick="closeUploadModal()" style="position: absolute; right: 16px; top: 16px; font-size: 24px; cursor: pointer; color: #666;">&times;</span>
             

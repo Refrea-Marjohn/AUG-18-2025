@@ -9,7 +9,7 @@ if ($res && $row = $res->fetch_assoc()) {
     $user_email = $row['email'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/' . $_SESSION['user_type'] . '-avatar.png';
+    $profile_image = 'images/default-avatar.jpg';
 }
 
 // Get user display name
@@ -47,7 +47,7 @@ $user_title = ucfirst($_SESSION['user_type']);
             </button>
             
             <!-- Notifications Dropdown -->
-            <div id="notificationsDropdown" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); width: 350px; max-height: 400px; overflow-y: auto; z-index: 1000; display: none;">
+            <div id="notificationsDropdown" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); width: 350px; max-height: 400px; overflow-y: auto; z-index: 3000; display: none;">
                 <div style="padding: 16px; border-bottom: 1px solid #e5e7eb;">
                     <h3 style="margin: 0; font-size: 16px; color: #374151;">Notifications</h3>
                 </div>
@@ -130,11 +130,51 @@ $user_title = ucfirst($_SESSION['user_type']);
                             </div>
                         </form>
                     </div>
-                </div>
-            </div>
-        </div>
+                        </div>
+    </div>
+</div>
 
-        <script>
+<!-- Move modal and notifications outside header -->
+<script>
+// Move modal and notifications to body level for proper layering
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('editProfileModal');
+    const notificationsDropdown = document.getElementById('notificationsDropdown');
+    
+    if (modal && modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+    }
+    
+    if (notificationsDropdown && notificationsDropdown.parentElement !== document.body) {
+        document.body.appendChild(notificationsDropdown);
+        
+        // Update notifications dropdown positioning to work with body
+        const notificationsBtn = document.getElementById('notificationsBtn');
+        if (notificationsBtn) {
+            notificationsBtn.addEventListener('click', function() {
+                const dropdown = document.getElementById('notificationsDropdown');
+                const btnRect = notificationsBtn.getBoundingClientRect();
+                
+                // Position dropdown relative to button
+                dropdown.style.position = 'fixed';
+                dropdown.style.top = (btnRect.bottom + 5) + 'px';
+                dropdown.style.right = (window.innerWidth - btnRect.right) + 'px';
+                dropdown.style.zIndex = '9999';
+                
+                // Toggle visibility
+                const isVisible = dropdown.style.display === 'block';
+                dropdown.style.display = isVisible ? 'none' : 'block';
+                
+                if (!isVisible) {
+                    loadNotifications();
+                }
+            });
+        }
+    }
+});
+</script>
+
+<script>
         function toggleProfileDropdown() {
             const dropdown = document.getElementById('profileDropdown');
             dropdown.classList.toggle('show');
@@ -211,21 +251,13 @@ $user_title = ucfirst($_SESSION['user_type']);
 // Notifications functionality
 let notificationsVisible = false;
 
-document.getElementById('notificationsBtn').addEventListener('click', function() {
-    const dropdown = document.getElementById('notificationsDropdown');
-    notificationsVisible = !notificationsVisible;
-    dropdown.style.display = notificationsVisible ? 'block' : 'none';
-    
-    if (notificationsVisible) {
-        loadNotifications();
-    }
-});
-
 // Close notifications when clicking outside
 document.addEventListener('click', function(event) {
-    const container = document.querySelector('.notifications-container');
-    if (!container.contains(event.target)) {
-        document.getElementById('notificationsDropdown').style.display = 'none';
+    const notificationsBtn = document.getElementById('notificationsBtn');
+    const dropdown = document.getElementById('notificationsDropdown');
+    
+    if (notificationsBtn && dropdown && !notificationsBtn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.style.display = 'none';
         notificationsVisible = false;
     }
 });

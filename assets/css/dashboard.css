@@ -129,6 +129,8 @@ body {
     overflow-x: hidden;
     max-width: calc(100vw - 260px) !important;
     min-height: 100vh;
+    position: relative;
+    z-index: 1;
 }
 
 /* Enhanced Header Styles */
@@ -143,11 +145,21 @@ body {
     margin-bottom: 24px;
     border: 1px solid rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 2000;
+}
+
+/* Ensure notifications container stays in header */
+.notifications-container {
+    position: relative !important;
+    z-index: 3000;
 }
 
 .user-info {
     display: flex;
     align-items: center;
+    position: relative;
+    z-index: 3000;
 }
 
 .header h1 {
@@ -465,7 +477,7 @@ body {
     min-width: 180px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    z-index: 1000;
+    z-index: 3000;
     margin-top: 8px;
     border: 1px solid #e1e5e9;
 }
@@ -517,6 +529,8 @@ body {
     margin-bottom: 32px;
     overflow-x: hidden;
     max-width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .card {
@@ -617,6 +631,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     transition: var(--transition);
+    position: relative;
+    z-index: 1;
 }
 
 .dashboard-graph:hover {
@@ -650,6 +666,8 @@ body {
     margin-bottom: 32px;
     border: 1px solid rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
 }
 
 .table-header {
@@ -736,6 +754,8 @@ body {
     gap: 16px;
     margin-bottom: 32px;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
 }
 
 .quick-actions .btn {
