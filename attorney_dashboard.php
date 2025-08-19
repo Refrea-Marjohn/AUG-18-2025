@@ -15,8 +15,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/attorney-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 // Total cases handled
 $stmt = $conn->prepare("SELECT COUNT(*) FROM attorney_cases WHERE attorney_id=?");
 $stmt->bind_param("i", $attorney_id);

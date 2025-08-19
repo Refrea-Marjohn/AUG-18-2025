@@ -4,6 +4,19 @@ if (!isset($_SESSION['attorney_name']) || $_SESSION['user_type'] !== 'attorney')
     header('Location: login_form.php');
     exit();
 }
+require_once 'config.php';
+$attorney_id = $_SESSION['user_id'];
+$stmt = $conn->prepare("SELECT profile_image FROM user_form WHERE id=?");
+$stmt->bind_param("i", $attorney_id);
+$stmt->execute();
+$res = $stmt->get_result();
+$profile_image = '';
+if ($res && $row = $res->fetch_assoc()) {
+    $profile_image = $row['profile_image'];
+}
+if (!$profile_image || !file_exists($profile_image)) {
+    $profile_image = 'images/default-avatar.jpg';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +57,7 @@ if (!isset($_SESSION['attorney_name']) || $_SESSION['user_type'] !== 'attorney')
                 <p>Manage electronic court filings</p>
             </div>
             <div class="user-info">
-                <img src="assets/images/attorney-avatar.png" alt="Attorney">
+                <img src="<?= htmlspecialchars($profile_image) ?>" alt="Attorney" style="object-fit:cover;width:60px;height:60px;border-radius:50%;border:2px solid #1976d2;">
                 <div class="user-details">
                     <h3><?php echo $_SESSION['attorney_name']; ?></h3>
                     <p>Attorney</p>

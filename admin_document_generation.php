@@ -14,8 +14,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/admin-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,8 +30,8 @@ if (!$profile_image || !file_exists($profile_image)) {
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -40,7 +40,7 @@ if (!$profile_image || !file_exists($profile_image)) {
             <li><a href="admin_document_generation.php" class="active"><i class="fas fa-file-alt"></i><span>Document Generations</span></a></li>
             <li><a href="admin_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
             <li><a href="admin_usermanagement.php"><i class="fas fa-users-cog"></i><span>User Management</span></a></li>
-            <li><a href="admin/manage_cases.php"><i class="fas fa-gavel"></i><span>Case Management</span></a></li>
+            <li><a href="admin_managecases.php"><i class="fas fa-gavel"></i><span>Case Management</span></a></li>
             <li><a href="admin_clients.php"><i class="fas fa-users"></i><span>My Clients</span></a></li>
             <li><a href="admin_messages.php"><i class="fas fa-comments"></i><span>Messages</span></a></li>
             <li><a href="admin_audit.php"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>

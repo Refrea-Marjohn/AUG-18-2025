@@ -14,8 +14,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/employee-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 
 // Log activity function for document actions
 function log_activity($conn, $doc_id, $action, $user_id, $user_name, $form_number, $file_name) {
@@ -189,8 +189,8 @@ if ($actRes && $actRes->num_rows > 0) {
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -200,7 +200,6 @@ if ($actRes && $actRes->num_rows > 0) {
             <li><a href="employee_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
             <li><a href="employee_clients.php"><i class="fas fa-users"></i><span>Client Management</span></a></li>
             <li><a href="employee_audit.php"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
         </ul>
     </div>
 

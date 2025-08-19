@@ -517,7 +517,7 @@ if (isset($_POST['submit'])) {
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-            z-index: 1000;
+            z-index: 9999;
             width: 90%;
             max-width: 400px;
             animation: slideIn 0.3s ease;
@@ -704,7 +704,7 @@ if (isset($_POST['submit'])) {
     <?php endif; ?>
 
     <?php if (isset($_SESSION['success'])): ?>
-        <div class="success-popup" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #2ecc71; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; z-index: 1000; width: 90%; max-width: 400px; animation: slideIn 0.3s ease;">
+        <div class="success-popup" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #2ecc71; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); text-align: center; z-index: 9999; width: 90%; max-width: 400px; animation: slideIn 0.3s ease;">
             <p style="margin: 0; font-size: 14px;"><?php echo $_SESSION['success']; ?></p>
             <button onclick="closeSuccessPopup()" style="background: white; border: none; padding: 8px 15px; color: #2ecc71; font-weight: 500; margin-top: 10px; cursor: pointer; border-radius: 4px; transition: background 0.3s ease;">OK</button>
         </div>
@@ -816,7 +816,7 @@ if (isset($_POST['submit'])) {
     </script>
 
     <!-- Forgot Password Modal -->
-    <div id="forgotPasswordModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(93, 14, 38, 0.8); display: none; align-items: center; justify-content: center; z-index: 2000;">
+    <div id="forgotPasswordModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(93, 14, 38, 0.8); display: none; align-items: center; justify-content: center; z-index: 9999;">
         <div id="modalContent" style="background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); padding: 40px 35px; max-width: 480px; width: 90%; position: relative;">
             
             <!-- Modal Header -->

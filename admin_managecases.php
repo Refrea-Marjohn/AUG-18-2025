@@ -1,10 +1,10 @@
 <?php
-require_once '../session_manager.php';
+require_once 'session_manager.php';
 validateUserAccess('admin');
 
-require_once '../config.php';
-require_once '../audit_logger.php';
-require_once '../action_logger_helper.php';
+require_once 'config.php';
+require_once 'audit_logger.php';
+require_once 'action_logger_helper.php';
 
 $admin_id = $_SESSION['user_id'];
 
@@ -147,8 +147,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = '../images/logo.jpg';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,24 +158,24 @@ if (!$profile_image || !file_exists($profile_image)) {
     <title>Case Management - Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <img src="../images/logo.jpg" alt="Logo">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="../admin_dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-            <li><a href="../admin_documents.php"><i class="fas fa-file-alt"></i><span>Document Storage</span></a></li>
-            <li><a href="../admin_document_generation.php"><i class="fas fa-file-alt"></i><span>Document Generations</span></a></li>
-            <li><a href="../admin_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
-            <li><a href="../admin_usermanagement.php"><i class="fas fa-users-cog"></i><span>User Management</span></a></li>
-            <li><a href="manage_cases.php" class="active"><i class="fas fa-gavel"></i><span>Case Management</span></a></li>
-            <li><a href="../admin_clients.php"><i class="fas fa-users"></i><span>My Clients</span></a></li>
-            <li><a href="../admin_messages.php"><i class="fas fa-comments"></i><span>Messages</span></a></li>
-            <li><a href="../admin_audit.php"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>
+            <li><a href="admin_dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="admin_documents.php"><i class="fas fa-file-alt"></i><span>Document Storage</span></a></li>
+            <li><a href="admin_document_generation.php"><i class="fas fa-file-alt"></i><span>Document Generations</span></a></li>
+            <li><a href="admin_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
+            <li><a href="admin_usermanagement.php"><i class="fas fa-users-cog"></i><span>User Management</span></a></li>
+            <li><a href="admin_managecases.php"><i class="fas fa-gavel"></i><span>Case Management</span></a></li>
+            <li><a href="admin_clients.php"><i class="fas fa-users"></i><span>My Clients</span></a></li>
+            <li><a href="admin_messages.php"><i class="fas fa-comments"></i><span>Messages</span></a></li>
+            <li><a href="admin_audit.php" class="active"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>
         </ul>
     </div>
 
@@ -259,8 +259,8 @@ if (!$profile_image || !file_exists($profile_image)) {
     </div>
 
     <!-- Add Case Modal -->
-    <div id="addCaseModal" class="modal">
-        <div class="modal-content">
+    <div id="addCaseModal" class="modal" style="z-index: 9999 !important;">
+        <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
             <span class="close">&times;</span>
             <h3>Add New Case</h3>
             <form id="addCaseForm">
@@ -321,8 +321,8 @@ if (!$profile_image || !file_exists($profile_image)) {
     </div>
 
     <!-- Edit Case Modal -->
-    <div id="editCaseModal" class="modal">
-        <div class="modal-content">
+    <div id="editCaseModal" class="modal" style="z-index: 9999 !important;">
+        <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
             <span class="close">&times;</span>
             <h3>Edit Case</h3>
             <form id="editCaseForm">
@@ -353,8 +353,8 @@ if (!$profile_image || !file_exists($profile_image)) {
     </div>
 
     <!-- View Case Modal -->
-    <div id="viewCaseModal" class="modal">
-        <div class="modal-content">
+    <div id="viewCaseModal" class="modal" style="z-index: 9999 !important;">
+        <div class="modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
             <!-- Content will be dynamically populated -->
         </div>
     </div>
@@ -509,7 +509,7 @@ if (!$profile_image || !file_exists($profile_image)) {
         }
         
         /* Modal Styles */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
         .modal-content { background-color: white; margin: 2% auto; padding: 0; border-radius: 12px; width: 80%; max-width: 800px; height: auto; overflow: hidden; }
 
         
@@ -818,7 +818,7 @@ if (!$profile_image || !file_exists($profile_image)) {
         function viewCase(caseId, title, clientName, attorneyName, caseType, status, description, dateFiled, nextHearing) {
             const modalContent = document.getElementById('viewCaseModal').querySelector('.modal-content');
             modalContent.innerHTML = `
-                <div class="modal-header">
+                <div class="modal-header" style="z-index: 9999 !important;">
                     <div class="header-content">
                         <div class="case-icon">
                             <i class="fas fa-gavel"></i>
@@ -832,7 +832,7 @@ if (!$profile_image || !file_exists($profile_image)) {
                     </div>
                 </div>
                 
-                <div class="modal-body">
+                <div class="modal-body" style="z-index: 9999 !important;">
                     <div class="case-overview">
                         <div class="status-banner status-${status.toLowerCase()}">
                             <i class="fas fa-circle"></i>
@@ -920,7 +920,7 @@ if (!$profile_image || !file_exists($profile_image)) {
                     </div>
                 </div>
                 
-                <div class="modal-footer">
+                <div class="modal-footer" style="z-index: 9999 !important;">
                     <div class="footer-actions">
                         <button type="button" class="btn-secondary" onclick="editCase(${caseId}, '${title}', '${status}', ${attorneyName ? 'getAttorneyIdByName(\'' + attorneyName + '\')' : 'null'})">
                             <i class="fas fa-edit"></i> Edit Case
@@ -1022,5 +1022,4 @@ if (!$profile_image || !file_exists($profile_image)) {
         }
     </script>
 </body>
-</html> 
-</html> 
+</html> </html> 

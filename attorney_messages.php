@@ -15,7 +15,7 @@ $stmt->execute();
 $res = $stmt->get_result();
 while ($row = $res->fetch_assoc()) {
     $img = $row['profile_image'];
-    if (!$img || !file_exists($img)) $img = 'assets/images/client-avatar.png';
+    if (!$img || !file_exists($img)) $img = 'images/default-avatar.jpg';
     $row['profile_image'] = $img;
     $clients[] = $row;
 }
@@ -30,7 +30,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'fetch_messages') {
     $stmt->execute();
     $res = $stmt->get_result();
     if ($res && $row = $res->fetch_assoc()) $attorney_img = $row['profile_image'];
-    if (!$attorney_img || !file_exists($attorney_img)) $attorney_img = 'assets/images/attorney-avatar.png';
+    if (!$attorney_img || !file_exists($attorney_img)) $attorney_img = 'images/default-avatar.jpg';
     // Fetch client profile image
     $client_img = '';
     $stmt = $conn->prepare("SELECT profile_image FROM user_form WHERE id=?");
@@ -38,7 +38,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'fetch_messages') {
     $stmt->execute();
     $res = $stmt->get_result();
     if ($res && $row = $res->fetch_assoc()) $client_img = $row['profile_image'];
-    if (!$client_img || !file_exists($client_img)) $client_img = 'assets/images/client-avatar.png';
+    if (!$client_img || !file_exists($client_img)) $client_img = 'images/default-avatar.jpg';
     // Fetch attorney to client
     $stmt1 = $conn->prepare("SELECT message, sent_at, 'attorney' as sender FROM attorney_messages WHERE attorney_id=? AND recipient_id=?");
     $stmt1->bind_param('ii', $attorney_id, $client_id);
@@ -135,8 +135,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'create_case_from_chat') {
 <body>
      <!-- Sidebar -->
      <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -169,8 +169,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'create_case_from_chat') {
                     $profile_image = $row['profile_image'];
                 }
                 if (!$profile_image || !file_exists($profile_image)) {
-                    $profile_image = 'assets/images/attorney-avatar.png';
-                }
+        $profile_image = 'images/default-avatar.jpg';
+    }
                 ?>
                 <img src="<?= htmlspecialchars($profile_image) ?>" alt="Attorney" style="object-fit:cover;width:42px;height:42px;border-radius:50%;border:2px solid var(--primary-color);">
                 <div class="user-details">

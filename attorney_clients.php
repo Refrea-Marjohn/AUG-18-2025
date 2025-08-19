@@ -38,7 +38,7 @@ if (isset($_GET['ajax_client_details']) && isset($_GET['client_id'])) {
     $closed_cases = count(array_filter($cases, function($c) { return $c['status'] === 'Closed'; }));
     ?>
     
-    <div class="client-modal-header">
+    <div class="client-modal-header" style="z-index: 9999 !important;">
         <div class="client-profile">
             <div class="client-avatar">
                 <?php if ($cinfo['profile_image'] && file_exists($cinfo['profile_image'])): ?>
@@ -78,7 +78,7 @@ if (isset($_GET['ajax_client_details']) && isset($_GET['client_id'])) {
         </div>
     </div>
 
-    <div class="modal-sections">
+    <div class="modal-sections" style="z-index: 9999 !important;">
         <div class="section">
             <h3><i class="fas fa-gavel"></i> Case Overview</h3>
         <div class="case-list">
@@ -173,8 +173,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/attorney-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 
 // Fetch all clients for this attorney with enhanced data
 $clients = [];
@@ -943,8 +943,8 @@ usort($client_details, function($a, $b) {
 <body>
      <!-- Sidebar -->
      <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -1095,8 +1095,8 @@ usort($client_details, function($a, $b) {
     </div>
 
     <!-- Enhanced Client Details Modal -->
-    <div class="modal-bg" id="clientModalBg">
-        <div class="modal-content" id="client-modal-content">
+    <div class="modal-bg" id="clientModalBg" style="z-index: 9999 !important;">
+        <div class="modal-content" id="client-modal-content" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
             <button class="close-modal" onclick="closeClientModal()">
                 <i class="fas fa-times"></i>
             </button>

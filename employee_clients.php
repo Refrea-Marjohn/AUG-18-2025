@@ -14,8 +14,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/employee-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 
 // Get all clients with case information
 $clients = [];
@@ -172,8 +172,8 @@ if (isset($_POST['action'])) {
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -183,7 +183,6 @@ if (isset($_POST['action'])) {
             <li><a href="employee_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
             <li><a href="employee_clients.php" class="active"><i class="fas fa-users"></i><span>Client Management</span></a></li>
             <li><a href="employee_audit.php"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
         </ul>
     </div>
 
@@ -323,8 +322,8 @@ if (isset($_POST['action'])) {
     </div>
 
     <!-- Client Details Modal -->
-    <div id="clientModal" class="modal-overlay" style="display:none;">
-        <div class="modal-content modern-modal">
+    <div id="clientModal" class="modal-overlay" style="display:none;" style="z-index: 9999 !important;">
+        <div class="modal-content modern-modal" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
             <button class="close-modal-btn" onclick="closeClientModal()" title="Close">&times;</button>
             <h2 style="margin-bottom:18px;">Client Details</h2>
             <div id="clientDetails">
@@ -334,8 +333,8 @@ if (isset($_POST['action'])) {
     </div>
 
     <!-- Client Cases Modal -->
-    <div id="casesModal" class="modal-overlay" style="display:none;">
-        <div class="modal-content modern-modal large-modal">
+    <div id="casesModal" class="modal-overlay" style="display:none;" style="z-index: 9999 !important;">
+        <div class="modal-content modern-modal large-modal" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
             <button class="close-modal-btn" onclick="closeCasesModal()" title="Close">&times;</button>
             <h2 style="margin-bottom:18px;">Client Cases</h2>
             <div id="clientCases">
@@ -345,8 +344,8 @@ if (isset($_POST['action'])) {
     </div>
 
     <!-- Client Documents Modal -->
-    <div id="documentsModal" class="modal-overlay" style="display:none;">
-        <div class="modal-content modern-modal large-modal">
+    <div id="documentsModal" class="modal-overlay" style="display:none;" style="z-index: 9999 !important;">
+        <div class="modal-content modern-modal large-modal" style="z-index: 9999 !important;" style="z-index: 10000 !important;">
             <button class="close-modal-btn" onclick="closeDocumentsModal()" title="Close">&times;</button>
             <h2 style="margin-bottom:18px;">Client Documents</h2>
             <div id="clientDocuments">

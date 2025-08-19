@@ -15,8 +15,8 @@ if ($res && $row = $res->fetch_assoc()) {
     $profile_image = $row['profile_image'];
 }
 if (!$profile_image || !file_exists($profile_image)) {
-    $profile_image = 'assets/images/employee-avatar.png';
-}
+        $profile_image = 'images/default-avatar.jpg';
+    }
 
 // Get audit data for employee documents
 $stmt = $conn->prepare("SELECT COUNT(*) as count FROM employee_document_activity WHERE DATE(timestamp) = CURDATE()");
@@ -42,8 +42,8 @@ $recent_activities = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">
-        <img src="images/logo.jpg" alt="Logo">
+                <div class="sidebar-header">
+            <img src="images/logo.jpg" alt="Logo">
             <h2>Opiña Law Office</h2>
         </div>
         <ul class="sidebar-menu">
@@ -53,7 +53,6 @@ $recent_activities = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             <li><a href="employee_schedule.php"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a></li>
             <li><a href="employee_clients.php"><i class="fas fa-users"></i><span>Client Management</span></a></li>
             <li><a href="employee_audit.php" class="active"><i class="fas fa-history"></i><span>Audit Trail</span></a></li>
-            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
         </ul>
     </div>
 
