@@ -44,7 +44,12 @@ if (isset($_POST['resend_otp']) && isset($_SESSION['pending_registration'])) {
     // Generate new OTP
     $new_otp = (string)rand(100000, 999999); // Ensure OTP is stored as string
     $_SESSION['pending_registration']['otp'] = $new_otp;
-    $_SESSION['pending_registration']['otp_expires'] = time() + 300; // 5 minutes
+    $_SESSION['pending_registration']['otp_expires'] = time() + 900; // 15 minutes
+    
+    // Release the session write lock before sending email to avoid blocking concurrent requests
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_write_close();
+    }
     
     // Send new OTP email
     require_once 'send_otp_email.php';
@@ -82,7 +87,7 @@ if (isset($_POST['verify_otp']) && isset($_SESSION['pending_registration'])) {
     
     if (time() > $pending['otp_expires']) {
         header('Content-Type: application/json');
-        echo json_encode(['status' => 'error', 'message' => 'OTP expired. Please register again.']);
+        echo json_encode(['status' => 'error', 'message' => 'OTP expired. Please click Resend OTP to get a new code.']);
         exit();
     } elseif ((string)$input_otp === (string)$pending['otp']) {
         // Insert user
@@ -142,8 +147,8 @@ if (isset($_POST['submit'])) {
     }
 
     // Password requirements check (server-side)
-    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_@#*%])[A-Za-z\d_@#*%]{8,}$/', $pass)) {
-        $_SESSION['error'] = "Password must be at least 8 characters, include uppercase and lowercase letters, at least one number, and at least one special character (_ @ # * %).";
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%\^&*()_\-+={}\[\]:;"\'<>,.?\/~`|\\\\])[A-Za-z\d!@#$%\^&*()_\-+={}\[\]:;"\'<>,.?\/~`|\\\\]{8,}$/', $pass)) {
+        $_SESSION['error'] = "Password must be at least 8 characters, include uppercase and lowercase letters, at least one number, and at least one allowed special character (! @ # $ % ^ & * ( ) _ + - = { } [ ] : ; \" ' < > , . ? / ~ ` | \\).";
         header("Location: register_form.php");
         exit();
     }
@@ -178,7 +183,7 @@ if (isset($_POST['submit'])) {
         'password' => $pass,
         'user_type' => $user_type,
         'otp' => $otp,
-        'otp_expires' => time() + 300 // 5 minutes
+        'otp_expires' => time() + 900 // 15 minutes
     ];
     // Send OTP email
     require_once 'send_otp_email.php';
@@ -669,7 +674,8 @@ if (isset($_POST['submit'])) {
                     <li>At least 8 characters</li>
                     <li>Must include uppercase and lowercase letters</li>
                     <li>Must include at least one number</li>
-                    <li>Must include at least one special character (_ @ # * %)</li>
+                    <li>Must include at least one special character</li>
+                    <li>Allowed: ! @ # $ % ^ & * ( ) _ + - = { } [ ] : ; " ' < > , . ? / ~ ` | \</li>
                 </ul>
 
                 <label for="cpassword">Confirm Password</label>
@@ -719,13 +725,21 @@ if (isset($_POST['submit'])) {
             document.querySelector('.error-popup').style.display = 'none';
         }
 
+        // Prevent spaces in critical fields (email, password, confirm password)
+        ['email','password','cpassword'].forEach(function(id){
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('keydown', function(e){ if (e.key === ' ') e.preventDefault(); });
+            el.addEventListener('input', function(){ this.value = this.value.replace(/\s+/g,''); });
+        });
+
         // Password validation (client-side)
         document.querySelector('form').addEventListener('submit', function(e) {
             var pass = document.getElementById('password').value;
             var cpass = document.getElementById('cpassword').value;
-            var requirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_@#*%])[A-Za-z\d_@#*%]{8,}$/;
+            var requirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%\^&*()_\-+={}\[\]:;"'<>,.?\/~`|\\])[A-Za-z\d!@#$%\^&*()_\-+={}\[\]:;"'<>,.?\/~`|\\]{8,}$/;
             if (!requirements.test(pass)) {
-                alert('Password must be at least 8 characters, include uppercase and lowercase letters, at least one number, and at least one special character (_ @ # * %).');
+                alert('Password must be at least 8 characters, include uppercase and lowercase letters, at least one number, and at least one allowed special character (! @ # $ % ^ & * ( ) _ + - = { } [ ] : ; " \'' + ' < > , . ? / ~ ` | \\).');
                 e.preventDefault();
                 return false;
             }
@@ -854,11 +868,21 @@ if (isset($_POST['submit'])) {
         }
 
         // Function to resend OTP (consolidated version)
+        // Global flags to prevent race conditions between resend and verify
+        window.__resending = window.__resending || false;
+        window.__verifying = window.__verifying || false;
+
         function resendOTP() {
+            if (window.__verifying) {
+                showMessage('Verification in progress. Please wait for it to finish or try again in a moment.', 'info');
+                return;
+            }
+            if (window.__resending) return;
             const resendBtn = document.querySelector('button[onclick="resendOTP()"]');
             const originalText = resendBtn.textContent;
             resendBtn.textContent = 'Sending...';
             resendBtn.disabled = true;
+            window.__resending = true;
             
             fetch(window.location.href, {
                 method: 'POST',
@@ -878,6 +902,18 @@ if (isset($_POST['submit'])) {
                         otpInput.value = '';
                         otpInput.focus();
                     }
+                    // Reset and restart 15-minute countdown
+                    try {
+                        const timerSpan = document.getElementById('otpTimer');
+                        if (timerSpan && timerSpan.parentElement) {
+                            timerSpan.parentElement.remove();
+                        }
+                    } catch (e) {}
+                    if (window.__otpTimerInterval) {
+                        clearInterval(window.__otpTimerInterval);
+                        window.__otpTimerInterval = null;
+                    }
+                    startOTPCountdown();
                 } else {
                     showMessage('Failed to send new OTP. Please try again.', 'error');
                 }
@@ -888,6 +924,7 @@ if (isset($_POST['submit'])) {
                 // Reset button state
                 resendBtn.textContent = originalText;
                 resendBtn.disabled = false;
+                window.__resending = false;
             });
         }
         
@@ -961,38 +998,18 @@ if (isset($_POST['submit'])) {
             console.log('Debug button found:', !!debugBtn);
             console.log('Resend button found:', !!resendBtn);
             
-            // Add click event listeners as backup
-            if (verifyBtn) {
-                verifyBtn.addEventListener('click', function(e) {
-                    console.log('Verify button clicked via event listener');
-                    verifyOTP();
-                });
-            }
-            
-            if (debugBtn) {
-                debugBtn.addEventListener('click', function(e) {
-                    console.log('Debug button clicked via event listener');
-                    debugOTP();
-                });
-            }
-            
-            if (resendBtn) {
-                resendBtn.addEventListener('click', function(e) {
-                    console.log('Resend button clicked via event listener');
-                    resendOTP();
-                });
-            }
+            // Avoid duplicate calls because buttons already have inline onclick handlers
             
             // Start OTP expiration countdown
             startOTPCountdown();
         });
         
         function startOTPCountdown() {
-            // OTP expires in 5 minutes (300 seconds)
-            let timeLeft = 300;
+            // OTP expires in 15 minutes (900 seconds)
+            let timeLeft = 900;
             const countdownElement = document.createElement('div');
             countdownElement.style.cssText = 'text-align: center; color: #e74c3c; font-size: 12px; margin-top: 10px; font-weight: 500;';
-            countdownElement.innerHTML = `⏰ OTP expires in <span id="otpTimer">5:00</span>`;
+            countdownElement.innerHTML = `⏰ OTP expires in <span id="otpTimer">15:00</span>`;
             
             // Insert countdown after the OTP input
             const otpInput = document.querySelector('input[name="otp"]');
@@ -1000,6 +1017,10 @@ if (isset($_POST['submit'])) {
                 otpInput.parentNode.appendChild(countdownElement);
             }
             
+            // Keep reference globally to clear when resending
+            if (window.__otpTimerInterval) {
+                clearInterval(window.__otpTimerInterval);
+            }
             const timer = setInterval(() => {
                 timeLeft--;
                 const minutes = Math.floor(timeLeft / 60);
@@ -1011,15 +1032,19 @@ if (isset($_POST['submit'])) {
                 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    showMessage('OTP has expired. Please register again.', 'error');
-                    setTimeout(() => {
-                        closeOtpModal();
-                    }, 2000);
+                    window.__otpTimerInterval = null;
+                    showMessage('OTP has expired. Click Resend OTP to get a new code.', 'error');
+                    // Keep the modal open so the user can press Resend OTP
                 }
             }, 1000);
+            window.__otpTimerInterval = timer;
         }
         
         function verifyOTP() {
+            if (window.__resending) {
+                showMessage('Please wait, a new OTP is being sent. Try again in a moment.', 'info');
+                return;
+            }
             console.log('=== VERIFY OTP FUNCTION CALLED ===');
             
             const otpInput = document.querySelector('input[name="otp"]');
@@ -1044,6 +1069,7 @@ if (isset($_POST['submit'])) {
             verifyBtn.textContent = 'Verifying...';
             verifyBtn.disabled = true;
             verifyBtn.style.opacity = '0.7';
+            window.__verifying = true;
             
             console.log('Button state updated, sending fetch request...');
             
@@ -1123,10 +1149,8 @@ if (isset($_POST['submit'])) {
                     } else if (response.includes('OTP expired')) {
                         // OTP expired
                         console.log('❌ OTP expired');
-                        showMessage('OTP has expired. Please register again.', 'error');
-                        setTimeout(() => {
-                            closeOtpModal();
-                        }, 2000);
+                        showMessage('OTP has expired. Click Resend OTP to get a new code.', 'error');
+                        // Keep modal open so user can press Resend OTP
                     } else if (response.includes('Invalid OTP')) {
                         // Invalid OTP
                         console.log('❌ Invalid OTP');
@@ -1149,6 +1173,7 @@ if (isset($_POST['submit'])) {
                 verifyBtn.textContent = originalText;
                 verifyBtn.disabled = false;
                 verifyBtn.style.opacity = '1';
+                window.__verifying = false;
             });
         }
 
