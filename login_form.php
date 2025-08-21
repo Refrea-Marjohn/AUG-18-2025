@@ -69,8 +69,8 @@ if (isset($_POST['forgot_reset_submit']) && isset($_SESSION['forgot_password_dat
     $email = $_SESSION['forgot_password_data']['email'];
     
     // Password requirements check
-    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_@#*%])[A-Za-z\d_@#*%]{8,}$/', $pass)) {
-        $_SESSION['error'] = "Password must be at least 8 characters, include uppercase and lowercase letters, at least one number, and at least one special character (_ @ # * %).";
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%\^&*()_\-+={}\[\]:;"\'<>,.?\/~`|\\\\])[A-Za-z\d!@#$%\^&*()_\-+={}\[\]:;"\'<>,.?\/~`|\\\\]{8,}$/', $pass)) {
+        $_SESSION['error'] = "Password must be at least 8 characters, include uppercase and lowercase letters, at least one number, and at least one allowed special character (! @ # $ % ^ & * ( ) _ + - = { } [ ] : ; \" ' < > , . ? / ~ ` | \\).";
         header("Location: login_form.php");
         exit();
     }
@@ -727,7 +727,7 @@ if (isset($_POST['submit'])) {
 
             <form action="" method="post">
                 <label for="email">Email</label>
-                <input type="email" name="email" required placeholder="Enter your email">
+                <input type="email" name="email" id="email" required placeholder="Enter your email">
 
                 <label for="password">Password</label>
                 <div class="password-container">
@@ -762,6 +762,14 @@ if (isset($_POST['submit'])) {
                 passwordField.type = 'password';
                 icon.classList.replace('fa-eye-slash', 'fa-eye');
             }
+        });
+
+        // Prevent spaces in email and password inputs
+        ['email','password'].forEach(function(id){
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('keydown', function(e){ if (e.key === ' ') e.preventDefault(); });
+            el.addEventListener('input', function(){ this.value = this.value.replace(/\s+/g,''); });
         });
 
         function closePopup() {
@@ -900,7 +908,8 @@ if (isset($_POST['submit'])) {
                         • At least 8 characters<br>
                         • Include uppercase and lowercase letters<br>
                         • Include at least one number<br>
-                        • Include at least one special character (_ @ # * %)
+                        • Include at least one special character<br>
+                        • Allowed: ! @ # $ % ^ & * ( ) _ + - = { } [ ] : ; " ' < > , . ? / ~ ` | \
                     </div>
                     
                     <button type="submit" name="forgot_reset_submit" 

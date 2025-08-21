@@ -2,6 +2,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require_once 'config.php';
+// Ensure Composer autoload is available whenever this helper is used
+require_once __DIR__ . '/vendor/autoload.php';
 
 function getOTPEmailTemplate($otp) {
     return '
@@ -69,7 +71,7 @@ function getOTPEmailTemplate($otp) {
                                         ⏰ Important Information
                                     </h3>
                                     <ul style="color: #856404; font-size: 14px; margin: 0; padding-left: 20px; line-height: 1.6;">
-                                        <li>This verification code will <strong>expire in 5 minutes</strong></li>
+                                        <li>This verification code will <strong>expire in 15 minutes</strong></li>
                                         <li>Use this code only on the Opiña Law Office registration page</li>
                                         <li>Do not share this code with anyone</li>
                                         <li>If you did not request this code, please ignore this email</li>
@@ -141,7 +143,9 @@ function send_otp_email($to, $otp) {
         $mail->Subject = 'Email Verification - Opiña Law Office Account Registration';
         $mail->Body = getOTPEmailTemplate($otp);
         $mail->send();
+        return true;
     } catch (Exception $e) {
-        // For debugging: echo 'Mailer Error: ' . $mail->ErrorInfo;
+        error_log('Mailer Error (OTP): ' . $mail->ErrorInfo);
+        return false;
     }
-} 
+}
